@@ -24,7 +24,7 @@ topology:
     spine1:
       startup-config: configs/spine1.cfg
     spine2:
-      startup-config: configs/spine1.cfg
+      startup-config: configs/spine2.cfg
     spine3:
       startup-config: configs/spine3.cfg
     spine4:
