@@ -4,6 +4,12 @@ This README is your starting point into the hands on section.
 
 Pre-requisite: A laptop with SSH client.
 
+Each participant will be assigned a Spine node. You are only required to configure your assigned spine node.
+
+Replace the IP address in the sample configs below with your assignd Spine's IP addressing scheme. Refer to the topology diagram and the table below.
+
+Both clients and leaf nodes are pre-configured. No additional configuration is required on them.
+
 Shortcut links to major sections in this README:
 
 |   |   |
@@ -47,7 +53,7 @@ sudo clab inspect --all
 
 ## Connecting to the devices
 
-Find the nodename or IP address of the device from the above output and then use SSH.
+Find the nodename or IP address of the device from the above output and then use SSH to connect to your spine.
 
 ```bash
 ssh leaf1
@@ -73,7 +79,7 @@ To commit the configuration in SR Linux, use:
 commit stay
 ```
 
-Here's a reference table with some commonly used commands.
+Here's a table with some commonly used commands.
 
 | Action | Command |
 | --- | --- |
@@ -91,6 +97,147 @@ Here's a reference table with some commonly used commands.
 | Access Linux shell | `bash` |
 | Find a command | `tree flat detail \| grep <keyword>` |
 
-## Configure Interfaces
+## Configure Spine Interfaces
+
+### System Interface
+
+Replace `bb` with your spine's IP. Refer to the table above to get your system IP.
+
+```
+set / interface system0 admin-state enable
+set / interface system0 subinterface 0 ipv4 admin-state enable
+set / interface system0 subinterface 0 ipv4 address bb.bb.bb.bb/32
+```
+
+### Interface facing leaf
+
+Refer to the topology diagram above to get the interface IP for your spine towards leaf
+
+```
+set / interface ethernet-1/2 admin-state enable
+set / interface ethernet-1/2 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/2 subinterface 0 ipv4 address cc.cc.cc.cc/31
+```
+
+### Interface facing other spine
+
+Refer to the topology diagram above to get the interface IP for your spine towards other spine
+
+```
+set / interface ethernet-1/1 admin-state enable
+set / interface ethernet-1/1 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/1 subinterface 0 ipv4 address dd.dd.dd.dd/31
+```
+
+### Interface show commands
+
+```
+show interface
+show interface brief
+show interface detail
+```
+
+All 3 interfaces created above should be Up.
+
+## Default Network Instance
+
+Same config on all spine nodes
+
+```
+set / network-instance default type default
+set / network-instance default admin-state enable
+set / network-instance default interface ethernet-1/1.0
+set / network-instance default interface ethernet-1/2.0
+set / network-instance default interface system0.0
+```
+
+After committing the configuration, try a ping to the remote end of the interface facing the leaf.
+
+```
+ping cc.cc.cc.cc network-instance default
+```
+
+## Configuring OSPF
+
+Configuring MTU (same on all spines):
+
+```
+set / system mtu default-port-mtu 8704
+set / system mtu default-ip-mtu 8690
+```
+
+Replace router-id with the system IP of your spine.
+
+```
+set / network-instance default protocols ospf instance default admin-state enable
+set / network-instance default protocols ospf instance default version ospf-v2
+set / network-instance default protocols ospf instance default router-id bb.bb.bb.bb
+set / network-instance default protocols ospf instance default area 0.0.0.0 interface ethernet-1/1.0 interface-type point-to-point
+set / network-instance default protocols ospf instance default area 0.0.0.0 interface ethernet-1/2.0 interface-type point-to-point
+set / network-instance default protocols ospf instance default area 0.0.0.0 interface system0.0 interface-type point-to-point
+```
+
+### OSPF show commands
+
+```
+show network-instance default protocols ospf neighbor
+show network-instance default protocols ospf interface
+show network-instance default protocols ospf database
+```
+
+Both OSPF neighbors should be Up on your assigned spine.
+
+## Check Route Table on Spine
+
+```
+show network-instance default route-table
+```
+
+## Configuring LDP
+
+Create MPLS label range for LDP (same config on all spines)
+
+```
+set / system mpls label-ranges dynamic ldp-block start-label 11000
+set / system mpls label-ranges dynamic ldp-block end-label 11999
+```
+
+Configure LDP (same config on all spines)
+
+```
+set / network-instance default protocols ldp admin-state enable
+set / network-instance default protocols ldp dynamic-label-block ldp-block
+set / network-instance default protocols ldp discovery interfaces interface ethernet-1/1.0 ipv4 admin-state enable
+set / network-instance default protocols ldp discovery interfaces interface ethernet-1/2.0 ipv4 admin-state enable
+```
+
+### LDP show commands
+
+```
+show network-instance default protocols ldp neighbor
+show network-instance default protocols ldp session
+show network-instance default protocols ldp ipv4 fec
+```
+
+There should 2 LDP sessions Up - 1 to the other spine and 1 to the leaf.
+
+## Ping between clients
+
+Now, ping should work between the clients.
+
+Login to Client1 and ping the remote IP for your assigned VLAN. Refer to the table above.
+
+```
+sudo docker exec -it client1 bash
+```
+
+```
+ping yy.yy.yy.yy
+```
+
+
+
+
+
 
 
