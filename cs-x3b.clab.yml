@@ -49,14 +49,14 @@ topology:
       kind: linux
       image: ghcr.io/srl-labs/network-multitool
       binds:
-        - client1.sh:/client1.sh
+        - configs/client1.sh:/client1.sh
       exec: 
         - bash /client1.sh
     client2:
       kind: linux
       image: ghcr.io/srl-labs/network-multitool
       binds:
-        - client2.sh:/client2.sh
+        - configs/client2.sh:/client2.sh
       exec: 
         - bash /client2.sh
    
