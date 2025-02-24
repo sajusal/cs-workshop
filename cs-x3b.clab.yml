@@ -20,7 +20,7 @@ topology:
       startup-config: configs/leaf1.partial.cfg
     leaf2:
       kind: vr-sros
-      startup-config: configs/leaf1.partial.cfg
+      startup-config: configs/leaf2.partial.cfg
     spine1:
       startup-config: configs/spine1.cfg
     spine2:
