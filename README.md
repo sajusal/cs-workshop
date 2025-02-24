@@ -14,8 +14,11 @@ Shortcut links to major sections in this README:
 
 |   |   |
 |---|---|
-| [Lab Topology](#lab-topology) | [Deploying the lab](#deploying-the-lab) |
-| [SR Linux Commands](#sr-linux-configuration-mode) | [Configure Interfaces](#configure-interfaces) |
+| [Lab Topology](#lab-topology) | [SR Linux Commands](#sr-linux-configuration-mode) |
+| [Configure Interfaces](#configure-spine-interfaces) | [Network Instance](#default-network-instance) |
+| [Configure OSPF](#configuring-ospf) | [Static Routes](#configuring-static-routes) |
+| [LDP](#configuring-ldp) | [Route policy](#configuring-route-policies) |
+| [ACL](#configuring-acl) | [Logging](#logging) |
 
 ## Workshop
 The objectives of the hands on section of this workshop are the following:
