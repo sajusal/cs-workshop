@@ -289,5 +289,41 @@ Ping your loopback IP from that spine
 ping ee.ee.ee.ee network-instance default
 ```
 
+## Configuring ACL
+
+We will create an ACL on the spine to block ping to the system IP.
+
+Use your assigned spine's system IP.
+
+```
+set / acl match-list ipv4-prefix-list my-prefixlist prefix 50.50.50.50/32
+set / acl acl-filter block-icmp type ipv4 statistics-per-entry true
+set / acl acl-filter block-icmp type ipv4 entry 10 match ipv4 protocol icmp
+set / acl acl-filter block-icmp type ipv4 entry 10 match ipv4 destination-ip prefix-list my-prefixlist
+set / acl acl-filter block-icmp type ipv4 entry 10 action drop
+```
+
+Before applying the filter, check if ping is successfull to leaf1 system IP.
+
+```
+ping 1.1.1.1 network-instance default
+```
+
+Ping should be succesful before applying the ACL.
+
+Now, apply the ACL to both interfaces of your spine.
+
+```
+set / acl interface ethernet-1/2.0 input acl-filter block-icmp type ipv4
+set / acl interface ethernet-1/1.0 input acl-filter block-icmp type ipv4
+```
+
+Check ping again. ACL should block the ping response.
+
+Check ACL counters.
+
+```
+show acl ipv4-filter block-icmp entry 10
+```
 
 
