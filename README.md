@@ -270,6 +270,12 @@ set / routing-policy policy export-lb statement my-lb match prefix-set loopbacks
 set / routing-policy policy export-lb statement my-lb action policy-result accept
 ```
 
+Apply the route policy in OSPF.
+
+```
+
+```
+
 Login to another spine and check the routing table to verify if your loopback IP is advertised and installed.
 
 ```
