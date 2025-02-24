@@ -273,10 +273,11 @@ set / routing-policy policy export-lb statement my-lb action policy-result accep
 Apply the route policy in OSPF.
 
 ```
-
+set / network-instance default protocols ospf instance default export-policy export-lb
+set / network-instance default protocols ospf instance default asbr
 ```
 
-Login to another spine and check the routing table to verify if your loopback IP is advertised and installed.
+Login to another spine and check the routing table to verify if your loopback IP is installed.
 
 ```
 show network-instance default route-table
