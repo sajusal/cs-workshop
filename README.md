@@ -29,7 +29,7 @@ The objectives of the hands on section of this workshop are the following:
 ![image](lab-topology.jpg)
 
 | X | Client1 IP | Client2 IP | Spine System IP | Loopback IP |
-|---|---|---|---|
+|---|---|---|---|---|
 | 1 | 12.12.12.100 | 12.12.12.200 | 10.10.10.10/32 | 15.15.15.15/32 |
 | 2 | 12.12.12.100 | 12.12.12.200 | 20.20.20.20/32 | 25.25.25.25/32 |
 | 3 | 34.34.34.100 | 34.34.34.200 | 30.30.30.30/32 | 35.35.35.35/32 |
