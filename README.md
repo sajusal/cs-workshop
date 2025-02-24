@@ -326,4 +326,30 @@ Check ACL counters.
 show acl ipv4-filter block-icmp entry 10
 ```
 
+## Logging
 
+System generated log files can be see using:
+
+```
+show system logging
+show system logging file messages
+```
+
+Debug can be enabled using `trace-options`. For example, to debug ospf:
+
+```
+/network-instance default protocols ospf instance default trace-options trace packet detail type all modifier in-and-egress
+```
+
+Debug can be seen from the bash shell.
+
+```
+bash tail -f /var/log/srlinux/debug/trace_events_other.log
+```
+
+To disable debug, remove `trace-options`.
+
+```
+delete network-instance default protocols ospf instance default trace-options
+commit now
+```
