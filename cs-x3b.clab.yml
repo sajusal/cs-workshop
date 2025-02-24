@@ -1,1 +1,83 @@
+name: cs-x3b
 
+prefix: ""
+topology:
+  defaults:
+    kind: srl
+  kinds:
+    vr-sros:
+      image: vr-sros:24.7.R1
+      type: ixr-s
+      license: /opt/srexperts/license-sros24.txt
+    srl:
+      type: ixrx3b
+      image: ghcr.io/nokia/srlinux:24.10.1
+      license: /opt/srexperts/license-srlinux24.txt
+  
+  nodes:
+    leaf1:
+      kind: vr-sros
+      startup-config: configs/leaf1.partial.cfg
+    leaf2:
+      kind: vr-sros
+      startup-config: configs/leaf1.partial.cfg
+    spine1:
+      startup-config: configs/spine1.cfg
+    spine2:
+      startup-config: configs/spine1.cfg
+    spine3:
+      startup-config: configs/spine3.cfg
+    spine4:
+      startup-config: configs/spine4.cfg
+    spine5:
+      startup-config: configs/spine5.cfg
+    spine6:
+      startup-config: configs/spine6.cfg
+    spine7:
+      startup-config: configs/spine7.cfg
+    spine8:
+      startup-config: configs/spine8.cfg
+    spine9:
+      startup-config: configs/spine9.cfg
+    spine10:
+      startup-config: configs/spine10.cfg
+    spine11:
+      startup-config: configs/spine11.cfg
+    spine12:
+      startup-config: configs/spine12.cfg
+    client1:
+      kind: linux
+      image: ghcr.io/srl-labs/network-multitool
+      binds:
+        - client1.sh:/client1.sh
+      exec: 
+        - bash /client1.sh
+    client2:
+      kind: linux
+      image: ghcr.io/srl-labs/network-multitool
+      binds:
+        - client2.sh:/client2.sh
+      exec: 
+        - bash /client2.sh
+   
+  links:
+    - endpoints: ["leaf1:eth1", "spine1:e1-2"]
+    - endpoints: ["leaf1:eth3", "spine3:e1-2"]
+    - endpoints: ["leaf1:eth5", "spine5:e1-2"]
+    - endpoints: ["leaf1:eth7", "spine7:e1-2"]
+    - endpoints: ["leaf1:eth9", "spine9:e1-2"]
+    - endpoints: ["leaf1:eth11", "spine11:e1-2"]
+    - endpoints: ["leaf2:eth2", "spine2:e1-2"]
+    - endpoints: ["leaf2:eth4", "spine4:e1-2"]
+    - endpoints: ["leaf2:eth6", "spine6:e1-2"]
+    - endpoints: ["leaf2:eth8", "spine8:e1-2"]
+    - endpoints: ["leaf2:eth10", "spine10:e1-2"]
+    - endpoints: ["leaf2:eth12", "spine12:e1-2"]
+    - endpoints: ["spine1:e1-1", "spine2:e1-1"]
+    - endpoints: ["spine3:e1-1", "spine4:e1-1"]
+    - endpoints: ["spine5:e1-1", "spine6:e1-1"]
+    - endpoints: ["spine7:e1-1", "spine8:e1-1"]
+    - endpoints: ["spine9:e1-1", "spine10:e1-1"]
+    - endpoints: ["spine11:e1-1", "spine12:e1-1"]
+    - endpoints: ["leaf1:eth20", "client1:eth1"]
+    - endpoints: ["leaf2:eth20", "client2:eth1"] 
