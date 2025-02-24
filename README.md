@@ -28,20 +28,20 @@ The objectives of the hands on section of this workshop are the following:
 
 ![image](lab-topology.jpg)
 
-| X | Client1 IP | Client2 IP | Spine System IP |
+| X | Client1 IP | Client2 IP | Spine System IP | Loopback IP |
 |---|---|---|---|
-| 1 | 12.12.12.100 | 12.12.12.200 | 10.10.10.10/32 |
-| 2 | 12.12.12.100 | 12.12.12.200 | 20.20.20.20/32 |
-| 3 | 34.34.34.100 | 34.34.34.200 | 30.30.30.30/32 |
-| 4 | 34.34.34.100 | 34.34.34.200 | 40.40.40.40/32 |
-| 5 | 56.56.56.100 | 56.56.56.200 | 50.50.50.50/32 |
-| 6 | 56.56.56.100 | 56.56.56.200 | 60.60.60.60/32 |
-| 7 | 78.78.78.100 | 78.78.78.200 | 70.70.70.70/32 |
-| 8 | 78.78.78.100 | 78.78.78.200 | 80.80.80.80/32 |
-| 9 | 91.91.91.91.100 | 91.91.91.91.200 | 90.90.90.90/32 |
-| 10 | 91.91.91.91.100 | 91.91.91.91.200 | 100.100.100.100/32 |
-| 11 | 112.112.112.100 | 112.112.112.200 | 110.110.110.110/32 |
-| 12 | 112.112.112.100 | 112.112.112.200 | 120.120.120.120/32 |
+| 1 | 12.12.12.100 | 12.12.12.200 | 10.10.10.10/32 | 15.15.15.15/32 |
+| 2 | 12.12.12.100 | 12.12.12.200 | 20.20.20.20/32 | 25.25.25.25/32 |
+| 3 | 34.34.34.100 | 34.34.34.200 | 30.30.30.30/32 | 35.35.35.35/32 |
+| 4 | 34.34.34.100 | 34.34.34.200 | 40.40.40.40/32 | 45.45.45.45/32 |
+| 5 | 56.56.56.100 | 56.56.56.200 | 50.50.50.50/32 | 55.55.55.55/32 |
+| 6 | 56.56.56.100 | 56.56.56.200 | 60.60.60.60/32 | 65.65.65.65/32 |
+| 7 | 78.78.78.100 | 78.78.78.200 | 70.70.70.70/32 | 75.75.75.75/32 |
+| 8 | 78.78.78.100 | 78.78.78.200 | 80.80.80.80/32 | 85.85.85.85/32 |
+| 9 | 91.91.91.91.100 | 91.91.91.91.200 | 90.90.90.90/32 | 95.95.95.95/32 |
+| 10 | 91.91.91.91.100 | 91.91.91.91.200 | 100.100.100.100/32 | 105.105.105.105/32 |
+| 11 | 112.112.112.100 | 112.112.112.200 | 110.110.110.110/32 | 115.115.115.115/32 |
+| 12 | 112.112.112.100 | 112.112.112.200 | 120.120.120.120/32 | 125.125.125.125/32 |
 
 ## Check status of deployed lab
 
@@ -252,9 +252,35 @@ sudo docker exec -it client1 bash
 ping yy.yy.yy.yy
 ```
 
+## Configuring Route Policies
 
+Create a loopback interface on your spine. Refer to the IP table above for IP to use on your spine.
 
+```
+set / interface lo1 subinterface 0 ipv4 admin-state enable
+set / interface lo1 subinterface 0 ipv4 address ee.ee.ee.ee/32
+set / network-instance default interface lo1.0
+```
 
+Create route policy to export this interface in OSPF.
+
+```
+set / routing-policy prefix-set loopbacks prefix ee.ee.ee.ee/32 mask-length-range exact
+set / routing-policy policy export-lb statement my-lb match prefix-set loopbacks
+set / routing-policy policy export-lb statement my-lb action policy-result accept
+```
+
+Login to another spine and check the routing table to verify if your loopback IP is advertised and installed.
+
+```
+show network-instance default route-table
+```
+
+Ping your loopback IP from that spine
+
+```
+ping ee.ee.ee.ee network-instance default
+```
 
 
 
