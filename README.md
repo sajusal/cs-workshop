@@ -193,6 +193,23 @@ Both OSPF neighbors should be Up on your assigned spine.
 show network-instance default route-table
 ```
 
+## Configuring Static Routes
+
+Configure a static route on your spine to reach the 99.99.99.99 IP on leaf1.
+
+Replace with the correct next-hop IP for your spine.
+
+```
+set / network-instance default next-hop-groups group cs-training nexthop 0 ip-address cc.cc.cc.cc
+set / network-instance default static-routes route 99.99.99.99/32 next-hop-group cs-training
+```
+
+Ping 99.99.99.99 IP from your spine. If ping fails, check your partner's spine and make sure static route is created there.
+
+```
+ping 99.99.99.99 network-instance default
+```
+
 ## Configuring LDP
 
 Create MPLS label range for LDP (same config on all spines)
