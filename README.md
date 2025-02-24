@@ -236,7 +236,7 @@ show network-instance default protocols ldp session
 show network-instance default protocols ldp ipv4 fec
 ```
 
-There should 2 LDP sessions Up - 1 to the other spine and 1 to the leaf.
+There should be 2 LDP sessions Up - 1 to the other spine and 1 to the leaf.
 
 ## Ping between clients
 
