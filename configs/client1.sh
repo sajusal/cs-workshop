@@ -14,9 +14,9 @@ ip link add link eth1 name eth1.78 type vlan id 78
 ip addr add 78.78.78.100/24 dev eth1.78
 ip link set eth1.78 up
 
-ip link add link eth1 name eth1.90 type vlan id 90
-ip addr add 90.90.90.100/24 dev eth1.90
-ip link set eth1.90 up
+ip link add link eth1 name eth1.91 type vlan id 91
+ip addr add 91.91.91.100/24 dev eth1.91
+ip link set eth1.91 up
 
 ip link add link eth1 name eth1.112 type vlan id 112
 ip addr add 112.112.112.100/24 dev eth1.112
