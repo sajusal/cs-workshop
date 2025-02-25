@@ -22,29 +22,29 @@ topology:
       kind: vr-sros
       startup-config: configs/leaf2.partial.cfg
     spine1:
-      startup-config: configs/spine1.cfg
+      #startup-config: configs/spine1.cfg
     spine2:
-      startup-config: configs/spine2.cfg
+      #startup-config: configs/spine2.cfg
     spine3:
-      startup-config: configs/spine3.cfg
+      #startup-config: configs/spine3.cfg
     spine4:
-      startup-config: configs/spine4.cfg
+      #startup-config: configs/spine4.cfg
     spine5:
-      startup-config: configs/spine5.cfg
+      #startup-config: configs/spine5.cfg
     spine6:
-      startup-config: configs/spine6.cfg
+      #startup-config: configs/spine6.cfg
     spine7:
-      startup-config: configs/spine7.cfg
+      #startup-config: configs/spine7.cfg
     spine8:
-      startup-config: configs/spine8.cfg
+      #startup-config: configs/spine8.cfg
     spine9:
-      startup-config: configs/spine9.cfg
+      #startup-config: configs/spine9.cfg
     spine10:
-      startup-config: configs/spine10.cfg
+      #startup-config: configs/spine10.cfg
     spine11:
-      startup-config: configs/spine11.cfg
+      #startup-config: configs/spine11.cfg
     spine12:
-      startup-config: configs/spine12.cfg
+      #startup-config: configs/spine12.cfg
     client1:
       kind: linux
       image: ghcr.io/srl-labs/network-multitool
